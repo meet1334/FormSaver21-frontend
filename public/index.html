@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+  <!-- <link rel="icon" type="image/x-icon" href="/src/assets/favicon-32x32.png" id="site_favicon" /> -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.khodaldhamtrust.org/upload_data/general/5e2fcf3588f5d_khodaldham_logo_english.svg">
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="manifest" id="site_manifest" href="manifest.json" />
+  <title>Form Saver 21</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker
+          .register('worker.js')
+          .then(  
+            function (registration) {
+              console.log('Worker registration successful', registration.scope);
+              Notification.requestPermission().then(function (permission) {
+
+              });
+            },
+            function (err) {
+              console.log('Worker registration failed', err);
+            }
+          )
+          .catch(function (err) {
+            console.log(err);
+          });
+      });
+    } else {
+      console.log('Service Worker is not supported by browser.');
+    }
+  </script>
+</body>
+
+</html>
