@@ -6,6 +6,9 @@ import './App.css';
 import { AccessToken, tokensSelector } from '../redux/ducks/token';
 import { getAccessRequest } from '../helper/requestAccess/requestAccess';
 import GlobalLoader from '../components/GlobalLoader/GlobalLoader';
+// import ToastNotification from '../components/ToastNotification/ToastNotification';
+import Login from '../pages/Login/Login';
+import Layout from '../pages/Layout/Layout';
 import ToastNotification from '../components/ToastNotification/ToastNotification';
 
 export interface IAppProps {
@@ -16,6 +19,7 @@ export interface IAppProps {
 
 export const generalContext = createContext<{
   userLevel: string;
+  resetPermisiion?: () => void;
 }>({
   userLevel: '',
 });
@@ -60,13 +64,16 @@ const App = () => {
       if (tokens.accessToken?.jwt) {
         const requestAccess = getAccessRequest(tokens.accessToken?.jwt);
 
-        if (requestAccess?.AccessApi) {
-          setUserLevel(requestAccess?.UserLevel);
+        if (requestAccess?.userLevel) {
+          setUserLevel(requestAccess?.userLevel);
         }
       }
     })();
   }, [tokens.accessToken?.jwt]);
-
+  
+  const resetPermission = () => {
+    setUserLevel('');
+  };
   useEffect(() => {
     if (readyToRender === false) {
       setReadyToRender(true);
@@ -76,10 +83,11 @@ const App = () => {
     <generalContext.Provider
       value={{
         userLevel: userLevel,
+        resetPermisiion: resetPermission,
       }}
     >
       <ToastNotification />
-      {/* <Routes>
+      <Routes>
         <Route
           path="/auth/login"
           element={
@@ -88,17 +96,17 @@ const App = () => {
             </UnauthorizedComponent>
           }
         />
-        <Route
+        {/* <Route
           path="/reset-password/:slug"
           element={
             <UnauthorizedComponent props={{ tokens }}>
               <ResetPassword />
             </UnauthorizedComponent>
           }
-        />
-        <Route path="/reset-link" element={<ResetLink />} />
+        /> */}
+        {/* <Route path="/reset-link" element={<ResetLink />} /> */}
         <Route path="*" element={<Layout />} />
-      </Routes> */}
+      </Routes>
     </generalContext.Provider>
   ) : (
     <GlobalLoader />

@@ -1,6 +1,6 @@
 import * as path from "path";
 import express from "express";
-
+import cors from "cors";
 const port = process.env.NX_APP_PORT;
 const app = express();
 
@@ -8,7 +8,7 @@ const app = express();
 
 //   next();
 // });
-
+app.use(cors());
 app.listen(port, () => {
   console.log(`=================================`);
   console.log(`======= ENV: ${process.env.NODE_ENV} =======`);

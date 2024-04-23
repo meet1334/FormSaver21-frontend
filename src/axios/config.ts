@@ -13,11 +13,11 @@ const setupAxios = (store: Store) => {
   });
   axios.interceptors.response.use(
     async (res) => {
-      return res;
+      return res;    
     },
     async (e) => {
       const storeData = store.getState();
-      const tokens: ItokenInitialRedux = storeData.tokens;
+      const tokens: ItokenInitialRedux = storeData.tokens;  
       //   if (tokens.refreshToken !== null) {
       // if (e.response.status === 401) {
       //   const originalRequest = e.config;
@@ -76,33 +76,36 @@ const setupAxios = (store: Store) => {
 
 export default setupAxios;
 
+const fronturl = `https://form-saver21.vercel.app`;
+// console.log(process.env.NX_APP_PORT, 'meet 786');
+
 export function axiosGet<T>(url: string, data: T | null = null) {
-  return axios.get(`${process.env.NX_APP_API_URL}${url}`, {
+  return axios.get(`${fronturl}${url}`, {
     params: data,
   });
 }
 
 export function axiosPost<T>(url: string, data: T | object) {
-  return axios.post(`${process.env.NX_APP_API_URL}${url}`, data);
+  return axios.post(`${fronturl}${url}`, data);
 }
 
 export const axiosConfig = (method: string, url: string, config: any, data: object) => {
   return axios({
     method: method,
-    url: `${process.env.NX_APP_API_URL}${url}`,
+    url: `${fronturl}${url}`,
     ...config,
     data,
   });
 };
 
 export const axiosPatch = (url: string, data: object) => {
-  return axios.patch(`${process.env.NX_APP_API_URL}${url}`, data);
+  return axios.patch(`${fronturl}${url}`, data);
 };
 
 export const axiosPut = (url: string, data: object) => {
-  return axios.put(`${process.env.NX_APP_API_URL}${url}`, data);
+  return axios.put(`${fronturl}${url}`, data);
 };
 
 export const axiosDelete = (url: string) => {
-  return axios.delete(`${process.env.NX_APP_API_URL}${url}`);
+  return axios.delete(`${fronturl}${url}`);
 };
