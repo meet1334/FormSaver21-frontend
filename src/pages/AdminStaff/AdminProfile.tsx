@@ -53,7 +53,7 @@ const AdminProfile = () => {
   const handleSubmit = async (values: FormikValues) => {
     setUpdateLoading(true);
     try {
-      const response = await updateAdminUser(values, '66210d314eb6e0af9112197b');
+      const response = await updateAdminUser(values, userId);
       if (response.status === 200) {
         dispatch(
           ToastShow({
@@ -74,15 +74,16 @@ const AdminProfile = () => {
       setUpdateLoading(false);
     }
   };
+
   useEffect(() => {
-    const userId = '66210d314eb6e0af9112197b';
-    getAdminProfile(userId);
-  }, []);
+    userId && getAdminProfile(userId);
+  }, [userId]);
+
   return isLoading ? (
     <GlobalLoader />
   ) : (
     <Card title={'PROFILE'}>
-      <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}>
+      {/* <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}> */}
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <span style={{ marginRight: '10px', fontWeight: 'bold' }}>ID:</span>
           <span style={{ color: '#333', fontWeight: 'bold' }}>{initialProfileValues?._id}</span>
@@ -332,7 +333,7 @@ const AdminProfile = () => {
             )}
           </Formik>
         </div>
-      </div>
+      {/* </div> */}
     </Card>
   );
 };

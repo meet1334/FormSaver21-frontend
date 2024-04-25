@@ -4,6 +4,7 @@ import React from 'react';
 // import DigitalMarketPlace from '../pages/digitalMarketPlace/DigitalMarketPlace';
 
 const SiteTrouble = React.lazy(() => import('../components/SiteTrouble/SiteTrouble'));
+const PageNotFound = React.lazy(() => import('../pages/404/PageNotFound'));
 const AdminProfile = React.lazy(() => import('../pages/AdminStaff/AdminProfile'));
 const AdminStaff = React.lazy(() => import('../pages/AdminStaff/AdminStaff'));
 const CreateAdminStaff = React.lazy(() => import('../pages/AdminStaff/CreateAdminStaff'));
@@ -45,9 +46,16 @@ const routes = [
     component: <CreateUsers />,
     moduleName: [],
   },
+
+  // Oops & 404 routes =================
   {
     path: '*',
     component: <SiteTrouble />,
+    moduleName: [],
+  },
+  {
+    path: '/404',
+    component: <PageNotFound />,
     moduleName: [],
   },
 ];

@@ -1,4 +1,4 @@
-import { Form, Formik, Field, FormikValues } from 'formik';
+import { Form, Formik, FormikValues } from 'formik';
 import React, { useContext, useEffect, useState } from 'react';
 import FormInput from '../../components/FormInput/FormInput';
 import CustomSelect from '../../components/Select/CustomSelect';
@@ -19,7 +19,6 @@ import { Option } from '../../types/CustomSelect';
 import { VILLAGES_OPTIONS } from '../../constants/villages';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { operations } from '../../constants/constants.utils';
-import { signUp } from '../../services/auth';
 import { initialUserValue, validationSchemaUserProfile } from '../../utils/helper/User/User';
 import { ICreateEditUserProfile } from '../../types/User/User';
 import { createUser, getUser, updateUser } from '../../services/user';
@@ -57,8 +56,7 @@ const CreateUsers = () => {
   const handleSubmit = async (values: FormikValues) => {
     setUpdateLoading(true);
     delete values._id;
-    const userValues = { ...values, createdBy: '66210d314eb6e0af9112197b' };
-    console.log(userValues);
+    const userValues = { ...values, createdBy: userId };
 
     try {
       const createOrUpdateUserResponse = id

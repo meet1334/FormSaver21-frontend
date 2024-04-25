@@ -7,7 +7,7 @@ const AdminStaff = () => {
 
   return (
     <Card title={'ADMIN STAFF'}>
-      <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}>
+      {/* <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}> */}
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <Button
             type="button"
@@ -30,7 +30,7 @@ const AdminStaff = () => {
             Create Staff
           </Button>
         </div>
-      </div>
+      {/* </div> */}
     </Card>
   );
 };

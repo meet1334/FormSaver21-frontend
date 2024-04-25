@@ -21,7 +21,7 @@ const navBarStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  backgroundColor: '#5400CF', // Green color
+  backgroundColor: '#5400CF', 
   padding: '10px',
 };
 
@@ -31,7 +31,6 @@ const navLinkStyle = {
   padding: '10px',
   borderRadius: '5px',
   background: '#5400CF',
-  // Blue color
 };
 const countStyle = {
   marginLeft: '5px',

@@ -1,4 +1,4 @@
-import { Form, Formik, Field, FormikValues } from 'formik';
+import { Form, Formik, FormikValues } from 'formik';
 import React, { useContext, useEffect, useState } from 'react';
 import FormInput from '../../components/FormInput/FormInput';
 import CustomSelect from '../../components/Select/CustomSelect';
@@ -60,7 +60,7 @@ const CreateAdminStaff = () => {
   const handleSubmit = async (values: FormikValues) => {
     setUpdateLoading(true);
     delete values._id;
-    const staffValues = { ...values, createdBy: '66210d314eb6e0af9112197b' };
+    const staffValues = { ...values, createdBy: userId };
 
     try {
       const createOrUpdateStaffResponse = id
@@ -137,7 +137,7 @@ const CreateAdminStaff = () => {
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         backgroundColor: '#fff',
         fontFamily: 'Times New Roman, serif',
-        height: '950px',
+        height: '930px',
       }}
     >
       {/* <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}> */}

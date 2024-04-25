@@ -13,11 +13,11 @@ const setupAxios = (store: Store) => {
   });
   axios.interceptors.response.use(
     async (res) => {
-      return res;    
+      return res;
     },
     async (e) => {
       const storeData = store.getState();
-      const tokens: ItokenInitialRedux = storeData.tokens;  
+      const tokens: ItokenInitialRedux = storeData.tokens;
       //   if (tokens.refreshToken !== null) {
       // if (e.response.status === 401) {
       //   const originalRequest = e.config;
@@ -76,8 +76,7 @@ const setupAxios = (store: Store) => {
 
 export default setupAxios;
 
-const fronturl = `https://form-saver21.vercel.app`;
-// console.log(process.env.NX_APP_PORT, 'meet 786');
+const fronturl = process.env.REACT_APP_LOCAL_URL;
 
 export function axiosGet<T>(url: string, data: T | null = null) {
   return axios.get(`${fronturl}${url}`, {

@@ -1,7 +1,7 @@
 import * as path from "path";
 import express from "express";
 import cors from "cors";
-const port = process.env.NX_APP_PORT;
+const port = process.env.REACT_APP_PORT;
 const app = express();
 
 // app.use(async (req: any, res, next) => {

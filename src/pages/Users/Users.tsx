@@ -6,7 +6,7 @@ const Users = () => {
   const navigate = useNavigate();
   return (
     <Card title={'USERS'}>
-      <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}>
+      {/* <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}> */}
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <Button
             type="button"
@@ -29,7 +29,7 @@ const Users = () => {
             Create User
           </Button>
         </div>
-      </div>
+      {/* </div> */}
     </Card>
   );
 };
