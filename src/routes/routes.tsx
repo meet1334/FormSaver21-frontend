@@ -4,54 +4,47 @@ import React from 'react';
 // import DigitalMarketPlace from '../pages/digitalMarketPlace/DigitalMarketPlace';
 
 const SiteTrouble = React.lazy(() => import('../components/SiteTrouble/SiteTrouble'));
+const AdminProfile = React.lazy(() => import('../pages/AdminStaff/AdminProfile'));
+const AdminStaff = React.lazy(() => import('../pages/AdminStaff/AdminStaff'));
 const CreateAdminStaff = React.lazy(() => import('../pages/AdminStaff/CreateAdminStaff'));
+const Users = React.lazy(() => import('../pages/Users/Users'));
 const CreateUsers = React.lazy(() => import('../pages/Users/CreateUsers'));
-const AdminStaffList = React.lazy(() => import('../pages/AdminStaff/AdminStaffList'));
-const UserList = React.lazy(() => import('../pages/Users/UserLists'));
 
 const routes = [
-  //for profile tab
-  //   {
-  //     path: '/user-profile',
-  //     name: 'User Profile',
-  //     component: <SiteTrouble />,
-  //     moduleName: [],
-  //   },
+  // Admin Profile routes =================
   {
     path: '/user-profile',
     name: 'User Profile',
-    component: <CreateAdminStaff />,
+    component: <AdminProfile />,
     moduleName: [],
-  }, {
+  },
+  // Admin staff routes =================
+  {
     path: '/admin-staff',
     name: 'Admin Staff',
-    component: <AdminStaffList />,
+    component: <AdminStaff />,
     moduleName: [],
   },
-  // {
-  //   path: '/adminstaff/create',
-  //   name: 'Admin Staff Create',
-  //   component: <CreateAdminStaff />,
-  //   moduleName: [],
-  // },
-  //   {
-  //     path: '/adminstaff/:slug',
-  //     name: 'Admin Staff Profile',
-  //     component: <SiteTrouble />,
-  //     moduleName: [],
-  //   },
+  {
+    path: '/admin-staff/:operation',
+    name: 'Create Admin Staff ',
+    component: <CreateAdminStaff />,
+    moduleName: [],
+  },
+
+  // User routes =================
   {
     path: '/users',
-    name: 'User',
-    component: <UserList />,
+    name: 'Users',
+    component: <Users />,
     moduleName: [],
   },
-  //   {
-  //     path: '/user/:slug',
-  //     name: 'User Profile',
-  //     component: <SiteTrouble />,
-  //     moduleName: [],
-  //   },
+  {
+    path: '/users/:operation',
+    name: 'Create Users ',
+    component: <CreateUsers />,
+    moduleName: [],
+  },
   {
     path: '*',
     component: <SiteTrouble />,

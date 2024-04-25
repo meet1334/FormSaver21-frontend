@@ -38,6 +38,8 @@ export const CustomSelect = (props: ICustomSelect) => {
     menuPlacement,
     style,
     closeMenuOnSelect,
+    labelStyle,
+    selectId,
     ...rest
   } = props;
 
@@ -78,93 +80,75 @@ export const CustomSelect = (props: ICustomSelect) => {
   };
 
   return (
-    <div
-    style={
-       style
-    }
-    //   className={` ${Width ? Width : ''} ${Margin ? Margin : ''} ${
-    //     parentClass ? parentClass : ''
-    //   } `}
-    >
+    <div style={style}>
       {selectLable && (
-        <label
-        //   className={`text-14px font-semibold text-GrayDark mb-2 block ${
-        //     labelClass ? labelClass : ''
-        //   }`}
-        >
+        <label>
           {selectLable}
-          {required && <span  style={{ color: 'red' }}> * </span>}
+          {required && <span style={{ color: 'red' }}> * </span>}
         </label>
       )}
 
       {icon && <span>{icon}</span>}
-      <Select
-        components={{ IndicatorsContainer }}
-        onChange={props.onChange ? props.onChange : handleChange}
-        name={rest.name}
-        closeMenuOnSelect={closeMenuOnSelect !== undefined ? closeMenuOnSelect : true}
-        // styles={
+      <div style={labelStyle}>
+        <Select
+          id={selectId}
+          components={{ IndicatorsContainer }}
+          onChange={props.onChange ? props.onChange : handleChange}
+          name={rest.name}
+          closeMenuOnSelect={closeMenuOnSelect !== undefined ? closeMenuOnSelect : true}
+          // styles={
 
-        // }
-        noOptionsMessage={
-          props.noOptionsMessage
-            ? () => {
-                return props.noOptionsMessage;
-              }
-            : undefined
-        }
-        value={
-          props.selectedValue && options.find((option) => option.value === props.selectedValue)
-            ? options.find((option) => option.value === props.selectedValue)
-            : getValue()
-              ? (getValue() as PropsValue<Option>)
-              : null
-        }
-        placeholder={placeholder}
-        options={options}
-        onMenuScrollToBottom={props.setScroll}
-        isMulti={isMulti ? true : undefined}
-        isDisabled={disabled}
-        className={className ? className : ''}
-        hideSelectedOptions={false}
-        // menuIsOpen={true}
-        onBlur={() => {
-          if (setFieldTouched) setFieldTouched(rest.name, true, true);
-        }}
-        getOptionLabel={(props: any) => {
-          const { icon, label } = props;
-          return (
-            <div>
-              {icon && icon}
-              <span>{label}</span>
-            </div>
-          ) as unknown as string;
-        }}
-        isLoading={props.isLoading}
-        menuPlacement={menuPlacement ? menuPlacement : 'auto'}
-      />
+          // }
+          noOptionsMessage={
+            props.noOptionsMessage
+              ? () => {
+                  return props.noOptionsMessage;
+                }
+              : undefined
+          }
+          value={
+            props.selectedValue && options.find((option) => option.value === props.selectedValue)
+              ? options.find((option) => option.value === props.selectedValue)
+              : getValue()
+                ? (getValue() as PropsValue<Option>)
+                : null
+          }
+          placeholder={placeholder}
+          options={options}
+          onMenuScrollToBottom={props.setScroll}
+          isMulti={isMulti ? true : undefined}
+          isDisabled={disabled}
+          className={className ? className : ''}
+          hideSelectedOptions={false}
+          // menuIsOpen={true}
+          onBlur={() => {
+            if (setFieldTouched) setFieldTouched(rest.name, true, true);
+          }}
+          getOptionLabel={(props: any) => {
+            const { icon, label } = props;
+            return (
+              <div>
+                {icon && icon}
+                <span>{label}</span>
+              </div>
+            ) as unknown as string;
+          }}
+          isLoading={props.isLoading}
+          menuPlacement={menuPlacement ? menuPlacement : 'auto'}
+        />
+      </div>
       {label && (
-        <label
-        //   className={`inline-block mb-1 text-sm font-medium text-ESBlack ${
-        //     labelClass ? labelClass : ''
-        //   }`}
-        >
+        <label>
           {label}
-          {required && (
-            <span
-           style={{color:"red"}}
-            >
-              *
-            </span>
-          )}
+          {required && <span style={{ color: 'red' }}>*</span>}
         </label>
       )}
-
-      <ErrorMessage name={rest.name}>   
+      {/* {meta?.error && <div style={{ marginTop: '10px', color: 'red' }}>{meta?.error}</div>} */}
+      <ErrorMessage name={props.name}>
         {(msg) => (
-          <span className="fm_error" style={{ color: 'red' }}>
-            {msg}
-          </span>
+          <div className="fm_error" style={{ color: 'red' }}>
+            {typeof msg === 'string' && msg}
+          </div>
         )}
       </ErrorMessage>
     </div>

@@ -7,5 +7,5 @@ export const login = (data: object) => {
 };
 
 export const signUp = (data:object)=>{
-    return axiosPost(`${prefix}/sign`,data);
+    return axiosPost(`${prefix}/signup`,data);
 }

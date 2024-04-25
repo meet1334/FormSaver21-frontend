@@ -1,29 +1,4 @@
 import React, { useState } from 'react';
-// import {
-//   Analytics,
-//   Headphone,
-//   Integration,
-//   KeyNormal,
-//   LockOff,
-//   Question,
-//   LogIn,
-//   MapPin,
-//   MarkerCheck,
-//   Mute,
-//   NavigationChat,
-//   SiteLogoIcon,
-//   SiteLogoWithText,
-//   User,
-//   Users,
-//   Apps,
-//   Product,
-//   Ticket,
-//   NotificationBell,
-//   ShoppingCart,
-//   SettingLine,
-//   LayerIcon,
-//   BackArrow,
-// } from '../../../export';
 import { Link, useNavigate } from 'react-router-dom';
 import { ISidebar } from '../../types/Sidebar/Sidebar';
 import { useDispatch } from 'react-redux';
@@ -46,7 +21,7 @@ const navBarStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  backgroundColor: '#4CAF50', // Green color
+  backgroundColor: '#5400CF', // Green color
   padding: '10px',
 };
 
@@ -55,16 +30,16 @@ const navLinkStyle = {
   textDecoration: 'none',
   padding: '10px',
   borderRadius: '5px',
-  background: '#008CBA',
+  background: '#5400CF',
   // Blue color
 };
 const countStyle = {
   marginLeft: '5px',
   padding: '2px 3px',
-  color: 'white',
+  color: 'red',
   fontSize: '16px',
-  backgroundColor: 'black',
-  border: '1px solid green',
+  backgroundColor: 'white',
+  border: '1px solid white',
   borderRadius: '50%',
 };
 const Sidebar = (props: ISidebar) => {
@@ -170,55 +145,5 @@ const Sidebar = (props: ISidebar) => {
   );
 };
 
-// const NavigationItemIconRender = ({
-//   componetName,
-//   props,
-// }: {
-//   componetName: string;
-//   props: { className: string };
-// }) => {
-//   switch (componetName) {
-//     case 'LayerIcon':
-//       return <LayerIcon {...props} />;
-//     case 'ShoppingCart':
-//       return <ShoppingCart {...props} />;
-//     case 'SettingLine':
-//       return <SettingLine {...props} />;
-//     case 'Question':
-//       return <Question {...props} />;
-//     case 'NotificationBell':
-//       return <NotificationBell {...props} />;
-//     case 'Product':
-//       return <Product {...props} />;
-//     case 'Ticket':
-//       return <Ticket {...props} />;
-//     case 'Apps':
-//       return <Apps {...props} />;
-//     case 'User':
-//       return <User {...props} />;
-//     case 'NavigationChat':
-//       return <NavigationChat {...props} />;
-//     case 'MapPin':
-//       return <MapPin {...props} />;
-//     case 'MarkerCheck':
-//       return <MarkerCheck {...props} />;
-//     case 'Users':
-//       return <Users {...props} />;
-//     case 'KeyNormal':
-//       return <KeyNormal {...props} />;
-//     case 'Analytics':
-//       return <Analytics {...props} />;
-//     case 'LockOff':
-//       return <LockOff {...props} />;
-//     case 'Headphone':
-//       return <Headphone {...props} />;
-//     case 'Mute':
-//       return <Mute {...props} />;
-//     case 'Integration':
-//       return <Integration {...props} />;
-//     default:
-//       return <></>;
-//   }
-// };
 
 export default Sidebar;

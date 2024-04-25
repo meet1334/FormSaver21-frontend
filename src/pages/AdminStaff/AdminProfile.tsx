@@ -6,7 +6,13 @@ import Button from '../../components/Button/Button';
 import { useDispatch } from 'react-redux';
 import { ToastShow } from '../../redux/ducks/toast';
 import { generalContext } from '../../app/App';
+import { getAdminUser, updateAdminUser } from '../../services/adminUser';
 import Card from '../../components/Card/Card';
+import { ICreateEditAdminUserProfile } from '../../types/Admin/AdminProfile';
+import {
+  initialAdminProfileValues,
+  validationSchemaAdminProfile,
+} from '../../utils/helper/Admin/AdminProfile';
 import GlobalLoader from '../../components/GlobalLoader/GlobalLoader';
 import { TITLE_OPTIONS } from '../../constants/constant';
 import {
@@ -17,33 +23,23 @@ import {
 import { OnChangeValue } from 'react-select';
 import { Option } from '../../types/CustomSelect';
 import { VILLAGES_OPTIONS } from '../../constants/villages';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { operations } from '../../constants/constants.utils';
-import { signUp } from '../../services/auth';
-import { initialUserValue, validationSchemaUserProfile } from '../../utils/helper/User/User';
-import { ICreateEditUserProfile } from '../../types/User/User';
-import { createUser, getUser, updateUser } from '../../services/user';
 
-const CreateUsers = () => {
-  const { userId } = useContext(generalContext);
-  const { operation } = useParams();
-  const navigate = useNavigate();
+const AdminProfile = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const [id, setId] = useState<string | number | null>('');
+  const { userId } = useContext(generalContext);
+  const [initialProfileValues, setInitialProfileValues] =
+    useState<ICreateEditAdminUserProfile>(initialAdminProfileValues);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [talukaOptions, setTalukaOptions] = useState<any>(TALUKA_OPTIONS);
   const [villageOptions, setVillageOptions] = useState<any>(VILLAGES_OPTIONS);
-  const [initialUserCreateEditValues, setinitialUserCreateEditValues] =
-    useState<ICreateEditUserProfile>(initialUserValue);
 
-  const getUserProfile = async (id: string | number) => {
+  const getAdminProfile = async (id: string | number) => {
     setIsLoading(true);
     try {
-      const getAdminRes = await getUser(id);
+      const getAdminRes = await getAdminUser(id);
       if (getAdminRes.status === 200) {
-        setinitialUserCreateEditValues(getAdminRes?.data?.data);
+        setInitialProfileValues(getAdminRes?.data?.data);
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -56,30 +52,16 @@ const CreateUsers = () => {
 
   const handleSubmit = async (values: FormikValues) => {
     setUpdateLoading(true);
-    delete values._id;
-    const userValues = { ...values, createdBy: '66210d314eb6e0af9112197b' };
-    console.log(userValues);
-
     try {
-      const createOrUpdateUserResponse = id
-        ? await updateUser(userValues, id)
-        : await createUser(userValues);
-      if (createOrUpdateUserResponse.status === 200) {
+      const response = await updateAdminUser(values, '66210d314eb6e0af9112197b');
+      if (response.status === 200) {
         dispatch(
           ToastShow({
-            message: createOrUpdateUserResponse?.data?.message,
+            message: response?.data?.message,
             type: 'success',
           })
         );
-        navigate('/users');
       } else {
-        dispatch(
-          ToastShow({
-            message: 'Something Error.',
-            type: 'error',
-          })
-        );
-        setUpdateLoading(false);
       }
       setUpdateLoading(false);
     } catch (error) {
@@ -92,68 +74,28 @@ const CreateUsers = () => {
       setUpdateLoading(false);
     }
   };
-
   useEffect(() => {
-    if (operation && operations.includes(operation)) {
-      if (operation === 'edit') {
-        const query = new URLSearchParams(location.search);
-        const id = query.get('id');
-        if (id) {
-          setId(id);
-        } else {
-          navigate('/404', { replace: true });
-        }
-      } else {
-        setId(null);
-      }
-    } else {
-      navigate('/404', { replace: true });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search, operation]);
-
-  useEffect(() => {
-    (async function () {
-      if (id) {
-        await getUserProfile(id);
-      } else {
-        setinitialUserCreateEditValues(initialUserValue);
-      }
-    })();
-  }, [id]);
-
+    const userId = '66210d314eb6e0af9112197b';
+    getAdminProfile(userId);
+  }, []);
   return isLoading ? (
     <GlobalLoader />
   ) : (
-    <Card
-      title={`${id ? 'UPDATE' : 'CREATE'} USER`}
-      cardStyle={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '16px',
-        margin: '16px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        backgroundColor: '#fff',
-        fontFamily: 'Times New Roman, serif',
-        height: '1100px',
-      }}
-    >
+    <Card title={'PROFILE'}>
       <div style={{ backgroundColor: 'white', width: 'auto', height: '950px' }}>
-        {id && (
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <span style={{ marginRight: '10px', fontWeight: 'bold' }}>ID:</span>
-            <span style={{ color: '#333', fontWeight: 'bold' }}>{id}</span>
-          </div>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <span style={{ marginRight: '10px', fontWeight: 'bold' }}>ID:</span>
+          <span style={{ color: '#333', fontWeight: 'bold' }}>{initialProfileValues?._id}</span>
+        </div>
 
         <div style={{}}>
           <Formik
-            initialValues={initialUserCreateEditValues}
-            validationSchema={validationSchemaUserProfile}
+            initialValues={initialProfileValues}
+            validationSchema={validationSchemaAdminProfile}
             onSubmit={handleSubmit}
-            enableReinitialize={true}
+            enableReinitialize={false}
           >
-            {({ values, setFieldValue, setFieldTouched, errors }) => (
+            {({ values, setFieldValue, errors }) => (
               <Form>
                 <div>
                   <div>
@@ -177,46 +119,32 @@ const CreateUsers = () => {
                     </Button>
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', width: '80%' }}>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <CustomSelect
                         selectId="title"
-                        labelStyle={{ marginTop: '8px', marginBottom: '10px' }}
+                        labelStyle={{ marginTop: '12px', marginBottom: '20px' }}
                         selectLable="Title"
                         isMulti={false}
                         name="title"
                         options={TITLE_OPTIONS}
                         placeholder="Title"
-                        style={{ width: '400px', marginTop: '8px' }}
+                        style={{ width: '400px', marginTop: '12px' }}
                         required
                       />
-                    </div>{' '}
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}></div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}></div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    </div>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <FormInput
                         id="firstname"
                         label="First name"
                         name="firstname"
                         type="text"
-                        placeholder="First name"
+                        placeholder="first name"
                         maxLength={50}
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
-                      {' '}
-                      <FormInput
-                        id="middlename"
-                        label="Middle name"
-                        name="middlename"
-                        type="text"
-                        placeholder="Middle name"
-                        maxLength={50}
-                        required
-                      />
-                    </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <FormInput
                         id="lastname"
@@ -228,7 +156,8 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <FormInput
                         id="dob"
@@ -240,7 +169,7 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <FormInput
                         id="phoneNumber"
                         label="Phone Number"
@@ -251,7 +180,7 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <FormInput
                         id="email"
@@ -263,7 +192,7 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <FormInput
                         id="profession"
@@ -275,11 +204,12 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <CustomSelect
                         selectId="district"
-                        labelStyle={{ marginTop: '8px', marginBottom: '10px' }}
+                        labelStyle={{ marginTop: '12px', marginBottom: '20px' }}
                         selectLable="District"
                         isMulti={false}
                         name="district"
@@ -300,16 +230,15 @@ const CreateUsers = () => {
                           taluka && setTalukaOptions(taluka);
                         }}
                         placeholder="District"
-                        style={{ width: '400px', marginTop: '8px' }}
+                        style={{ width: '400px', marginTop: '12px' }}
                         required
-                        setFieldTouched={setFieldTouched}
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       {' '}
                       <CustomSelect
                         selectId="taluka"
-                        labelStyle={{ marginTop: '8px', marginBottom: '10px' }}
+                        labelStyle={{ marginTop: '12px', marginBottom: '20px' }}
                         selectLable="Taluka"
                         isMulti={false}
                         name="taluka"
@@ -332,15 +261,14 @@ const CreateUsers = () => {
                           setVillageOptions(cities);
                         }}
                         placeholder="Taluka"
-                        style={{ width: '400px', marginTop: '8px' }}
+                        style={{ width: '400px', marginTop: '12px' }}
                         required
-                        setFieldTouched={setFieldTouched}
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <CustomSelect
                         selectId="city"
-                        labelStyle={{ marginTop: '8px', marginBottom: '10px' }}
+                        labelStyle={{ marginTop: '12px', marginBottom: '20px' }}
                         selectLable="City"
                         isMulti={false}
                         name="city"
@@ -349,12 +277,11 @@ const CreateUsers = () => {
                           setFieldValue('city', (newValue as Option).value);
                         }}
                         placeholder="City"
-                        style={{ width: '400px', marginTop: '8px' }}
+                        style={{ width: '400px', marginTop: '12px' }}
                         required
-                        setFieldTouched={setFieldTouched}
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <FormInput
                         id="address"
                         label="Address"
@@ -365,7 +292,7 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <FormInput
                         id="pincode"
                         label="Pincode"
@@ -376,7 +303,8 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <FormInput
                         id="username"
                         label="Username"
@@ -387,7 +315,7 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}>
+                    <div style={{ width: '30%', margin: '5px', padding: '10px' }}>
                       <FormInput
                         id="password"
                         label="Password"
@@ -398,8 +326,6 @@ const CreateUsers = () => {
                         required
                       />
                     </div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}></div>
-                    <div style={{ width: '30%', margin: '1px', padding: '10px' }}></div>
                   </div>
                 </div>
               </Form>
@@ -411,4 +337,4 @@ const CreateUsers = () => {
   );
 };
 
-export default CreateUsers;
+export default AdminProfile;

@@ -13,6 +13,7 @@ interface IButton {
   value?: string;
   forwardedRef?: LegacyRef<HTMLButtonElement> | null;
   id?: string;
+  style?:any;
 }
 
 const Button = (props: IButton) => {
@@ -23,17 +24,7 @@ const Button = (props: IButton) => {
         ref={props.forwardedRef}
         value={props.value ? props.value : undefined}
         disabled={props.onlyDisable !== undefined ? props.onlyDisable : props.loader}
-        style={{
-          margin: '10px',
-          border: '2px solid',
-          padding: '10px 5px',
-          fontSize: '15px',
-          backgroundColor: 'white',
-          width: '50%',
-          height: '20%',
-          color: 'black',
-          borderRadius: '10px',
-        }}
+        style={props.style}
         type={props.type}
         onClick={props.onClickHandler}
       >

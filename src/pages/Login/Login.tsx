@@ -24,9 +24,6 @@ const Login = () => {
     try {
       const response = await login({ email: values.email, password: values.password });
       if (response.status === 200) {
-        const cookieHeader = response.headers['Set-Cookie'];
-        // Log cookie value
-        console.log('Cookie:', cookieHeader);
         dispatch(
           setTokens({
             accessToken: response.data.accessToken,
@@ -51,10 +48,10 @@ const Login = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#FFCA04', width: 'auto', height: '950px' }}>
+    <div style={{ backgroundColor: '#5400CF', width: 'auto', height: '1050px' }}>
       <div
         style={{
-          border: '5px solid orange ',
+          border: '5px solid white ',
           borderRadius: '12px',
           position: 'absolute',
           top: '50%',
@@ -62,7 +59,9 @@ const Login = () => {
           transform: 'translate(-50%, -50%)',
           padding: '50px',
           boxShadow: '0 0 0.5rem hsl(300, 40%, 5%)',
+          backgroundColor: 'white',
         }}
+        
       >
         <Formik
           initialValues={initialLoginValues}
@@ -106,8 +105,22 @@ const Login = () => {
                   required={true}
                 /> */}
               </div>
-
-              <Button type="submit" parentStyle={{ marginLeft: '140px' }} loader={loginProcess}>
+              <Button
+                type="submit"
+                style={{
+                  marginTop: '30px',
+                  border: '2px solid',
+                  padding: '10px 10px',
+                  fontSize: '15px',
+                  backgroundColor: '#5400CF',
+                  width: '50%',
+                  height: '20%',
+                  color: 'white',
+                  borderRadius: '10px',
+                }}
+                parentStyle={{ marginLeft: '30%', marginTop: '20px' }}
+                loader={loginProcess}
+              >
                 Sign in
               </Button>
             </Form>

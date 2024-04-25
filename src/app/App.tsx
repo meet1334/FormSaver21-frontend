@@ -19,9 +19,11 @@ export interface IAppProps {
 
 export const generalContext = createContext<{
   userLevel: string;
+  userId: string;
   resetPermisiion?: () => void;
 }>({
   userLevel: '',
+  userId: '',
 });
 
 const UnauthorizedComponent = ({
@@ -54,6 +56,7 @@ const App = () => {
   const tokens = useSelector(tokensSelector);
   const [readyToRender, setReadyToRender] = useState(false);
   const [userLevel, setUserLevel] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   let authToken: string | null = null;
   if (typeof window !== 'undefined') {
     authToken = localStorage.getItem('authToken');
@@ -64,13 +67,14 @@ const App = () => {
       if (tokens.accessToken?.jwt) {
         const requestAccess = getAccessRequest(tokens.accessToken?.jwt);
 
-        if (requestAccess?.userLevel) {
+        if (requestAccess?.userLevel && requestAccess?.userId) {
           setUserLevel(requestAccess?.userLevel);
+          setUserId(requestAccess?.userId);
         }
       }
     })();
   }, [tokens.accessToken?.jwt]);
-  
+
   const resetPermission = () => {
     setUserLevel('');
   };
@@ -82,6 +86,7 @@ const App = () => {
   return readyToRender === true ? (
     <generalContext.Provider
       value={{
+        userId: userId,
         userLevel: userLevel,
         resetPermisiion: resetPermission,
       }}

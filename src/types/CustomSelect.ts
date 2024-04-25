@@ -29,7 +29,7 @@ export interface ICustomSelect {
   parentClass?: string;
   className?: string;
   required?: boolean;
-  style:any;
+  style?:any;
   noOptionsMessage?: string;
   setFieldTouched?: (
     field: string,
@@ -40,6 +40,8 @@ export interface ICustomSelect {
   setScroll?: (value: number | any) => void;
   isLoading?: boolean;
   menuPlacement?: 'top' | 'auto' | 'bottom';
+  labelStyle?:any;
+  selectId:any;
 }
 
 export interface ICustomSelectValue {
