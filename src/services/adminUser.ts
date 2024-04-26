@@ -2,8 +2,8 @@ import { axiosDelete, axiosGet, axiosPatch } from '../axios/config';
 
 const prefix = `/api/adminuser`;
 
-export const getAllAdminUsers = () => {
-  return axiosGet(`${prefix}/`);
+export const getAllAdminUsers = (data: object) => {
+  return axiosGet(`${prefix}`, data);
 };
 
 export const getAllAdminUsersOption = () => {
