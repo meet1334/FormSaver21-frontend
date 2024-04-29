@@ -3,10 +3,11 @@ import Card from '../../components/Card/Card';
 import { Navigate, useNavigate } from 'react-router-dom';
 import CustomTable from '../../components/CustomTable/CustomTable';
 import { useEffect, useState } from 'react';
-import { getAllAdminUsers } from '../../services/adminUser';
+import { deleteAdminUser, getAllAdminUsers } from '../../services/adminUser';
 import GlobalLoader from '../../components/GlobalLoader/GlobalLoader';
 import { useDispatch } from 'react-redux';
 import { ToastShow } from '../../redux/ducks/toast';
+import Modal from '../../components/Modal/Modal';
 const AdminStaff = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,10 +21,12 @@ const AdminStaff = () => {
   const [totalDataCount, setTotalDataCount] = useState<number>(0);
   const [totalPagesCount, setTotalPagesCount] = useState(0);
   const [adminStaffID, setAdminStaffID] = useState<number | string>();
-  const [rowClicked, setRowClicked] = useState(true);
+  const [rowClicked, setRowClicked] = useState(false);
   const [openReasonIndex, setOpenReasonIndex] = useState<boolean>(false);
   const [idLoading, setIdLoading] = useState<boolean>(false);
   const [adminStaffData, setAdminStaffData] = useState([]);
+  const [deleteModel, setDeleteModel] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<number | string>();
   const onCharClick = (char: string) => {
     if (finalSort.includes(char)) {
       const tempArray = [...finalSort];
@@ -158,6 +161,37 @@ const AdminStaff = () => {
         return `${props?.createdBy}`;
       },
     },
+    {
+      header: '',
+      name: '',
+      cell: (props: any) => {
+        return (
+          <span
+            onClick={() => {
+              setDeleteModel(true);
+              setDeleteId(props._id);
+            }}
+          >
+            <i className="material-icons" style={{fontSize:"24px",color:"#5400CF"}}>delete</i>
+          </span>
+        );
+      },
+    },
+    {
+      header: '',
+      name: '',
+      cell: (props: any) => {
+        return (
+          <span
+            onClick={() => {
+              navigate(`/admin-staff/edit?id=${props._id}`);
+            }}
+          >
+            <i className="material-icons" style={{fontSize:"24px",color:"#5400CF"}}>edit</i>
+          </span>
+        );
+      },
+    },
   ];
 
   const getAdminStaffs = async (query: { page: number; limit: number }) => {
@@ -187,6 +221,37 @@ const AdminStaff = () => {
         })
       );
       setIdLoading(false);
+      console.log(error);
+    }
+  };
+
+  const deleteAdminStaff = async (id: string | number) => {
+    try {
+      console.log(id, '786 786');
+
+      const responseDelete = await deleteAdminUser(id);
+      if (responseDelete?.status === 200) {
+        dispatch(
+          ToastShow({
+            message: 'Admin Staff Deleted successfully',
+            type: 'success',
+          })
+        );
+      } else {
+        dispatch(
+          ToastShow({
+            message: 'Something went wrong',
+            type: 'error',
+          })
+        );
+      }
+    } catch (error) {
+      dispatch(
+        ToastShow({
+          message: 'Something went wrong',
+          type: 'error',
+        })
+      );
       console.log(error);
     }
   };
@@ -253,6 +318,20 @@ const AdminStaff = () => {
         setSearchText={setSearchText}
         onrowClick={setAdminStaffID}
         closeReasonModal={setOpenReasonIndex}
+      />
+      <Modal
+        onClickBtn={'Yes, Delete'}
+        onClickHandler={() => {
+          deleteId && deleteAdminStaff(deleteId);
+          setDeleteModel(false);
+        }}
+        title={'Are you sure you want to delete this item?'}
+        isCloseBtn
+        isModelOpen={deleteModel}
+        onCloseHandler={() => {
+          deleteAdminStaff(0);
+          setDeleteModel(false);
+        }}
       />
     </Card>
   );

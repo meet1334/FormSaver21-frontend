@@ -5,8 +5,9 @@ import GlobalLoader from '../../components/GlobalLoader/GlobalLoader';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import CustomTable from '../../components/CustomTable/CustomTable';
-import { getAllUsers } from '../../services/user';
+import { deleteUser, getAllUsers } from '../../services/user';
 import { ToastShow } from '../../redux/ducks/toast';
+import Modal from '../../components/Modal/Modal';
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -21,10 +22,12 @@ const Users = () => {
   const [totalDataCount, setTotalDataCount] = useState<number>(0);
   const [totalPagesCount, setTotalPagesCount] = useState(0);
   const [userID, setUserID] = useState<number | string>();
-  const [rowClicked, setRowClicked] = useState(true);
+  const [rowClicked, setRowClicked] = useState(false);
   const [openReasonIndex, setOpenReasonIndex] = useState<boolean>(false);
   const [idLoading, setIdLoading] = useState<boolean>(false);
   const [usersData, setUsersData] = useState([]);
+  const [deleteModel, setDeleteModel] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<number | string>();
   const onCharClick = (char: string) => {
     if (finalSort.includes(char)) {
       const tempArray = [...finalSort];
@@ -152,6 +155,41 @@ const Users = () => {
         return `${props?.createdBy[0]?.firstname} ${props?.createdBy[0]?.lastname}`;
       },
     },
+    {
+      header: '',
+      name: '',
+      cell: (props: any) => {
+        return (
+          <span
+            onClick={() => {
+              setDeleteModel(true);
+              setDeleteId(props._id);
+            }}
+          >
+            <i className="material-icons" style={{ fontSize: '24px', color: '#5400CF' }}>
+              delete
+            </i>
+          </span>
+        );
+      },
+    },
+    {
+      header: '',
+      name: '',
+      cell: (props: any) => {
+        return (
+          <span
+            onClick={() => {
+              navigate(`/users/edit?id=${props._id}`);
+            }}
+          >
+            <i className="material-icons" style={{ fontSize: '24px', color: '#5400CF' }}>
+              edit
+            </i>
+          </span>
+        );
+      },
+    },
   ];
 
   const getUsers = async (query: { page: number; limit: number }) => {
@@ -182,6 +220,36 @@ const Users = () => {
         })
       );
       setIdLoading(false);
+      console.log(error);
+    }
+  };
+  const deleteUsers = async (id: string | number) => {
+    try {
+      console.log(id, '786 786');
+
+      const responseDelete = await deleteUser(id);
+      if (responseDelete?.status === 200) {
+        dispatch(
+          ToastShow({
+            message: 'User Deleted successfully',
+            type: 'success',
+          })
+        );
+      } else {
+        dispatch(
+          ToastShow({
+            message: 'Something went wrong',
+            type: 'error',
+          })
+        );
+      }
+    } catch (error) {
+      dispatch(
+        ToastShow({
+          message: 'Something went wrong',
+          type: 'error',
+        })
+      );
       console.log(error);
     }
   };
@@ -296,6 +364,20 @@ const Users = () => {
         setSearchText={setSearchText}
         onrowClick={setUserID}
         closeReasonModal={setOpenReasonIndex}
+      />
+      <Modal
+        onClickBtn={'Yes, Delete'}
+        onClickHandler={() => {
+          deleteId && deleteUsers(deleteId);
+          setDeleteModel(false);
+        }}
+        title={'Are you sure you want to delete this item?'}
+        isCloseBtn
+        isModelOpen={deleteModel}
+        onCloseHandler={() => {
+          // deleteUsers(0);
+          setDeleteModel(false);
+        }}
       />
     </Card>
   );
