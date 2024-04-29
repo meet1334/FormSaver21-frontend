@@ -9,6 +9,7 @@ const Card = (props: any) => {
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     backgroundColor: '#fff',
     fontFamily: 'Times New Roman, serif',
+    height:"900px"
   };
 
   const titleStyle = {

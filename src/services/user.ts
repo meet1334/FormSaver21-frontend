@@ -6,8 +6,8 @@ export const createUser = (data:object)=>{
     return axiosPost(`${prefix}/`,data);
 }
 
-export const getAllUsers = () => {
-  return axiosGet(`${prefix}/`);
+export const getAllUsers = (data:object) => {
+  return axiosGet(`${prefix}/`,data);
 };
 
 export const getAllUsersOption = () => {

@@ -18,7 +18,7 @@ const SiteTrouble = () => {
               lineHeight: '1',
               fontFamily: 'BinerkaDemo',
               fontWeight: 'bold',
-              color: '#ffd700',
+              color: '#5400CF',
               textShadow: '-8px 0 0 #000',
             }}
           >

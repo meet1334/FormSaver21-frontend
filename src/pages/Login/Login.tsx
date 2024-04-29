@@ -1,10 +1,8 @@
 // import { At, Button, CheckBox, FormInput, LockOff, SiteLogoWithText } from '@radefy/component';
-import { ErrorMessage, Form, Formik, Field, FormikValues } from 'formik';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {  Form, Formik, FormikValues } from 'formik';
+import  { useState } from 'react';
 import { initialLoginValues, validationSchemaLogin } from '../../utils/helper/login';
 import FormInput from '../../components/FormInput/FormInput';
-import CustomSelect from '../../components/Select/CustomSelect';
 import Button from '../../components/Button/Button';
 import { login } from '../../services/auth';
 import { useDispatch } from 'react-redux';
@@ -13,13 +11,10 @@ import { ToastShow } from '../../redux/ducks/toast';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loginProcess, setLoginProcess] = useState(false);
-  const [loading, setLoading] = useState(false);
+
 
   const handleLogin = async (values: FormikValues) => {
-    console.log(values, '786');
-
     setLoginProcess(true);
     try {
       const response = await login({ email: values.email, password: values.password });
@@ -61,7 +56,6 @@ const Login = () => {
           boxShadow: '0 0 0.5rem hsl(300, 40%, 5%)',
           backgroundColor: 'white',
         }}
-        
       >
         <Formik
           initialValues={initialLoginValues}
@@ -90,20 +84,6 @@ const Login = () => {
                   maxLength={50}
                   required={true}
                 />
-                {/* <CustomSelect
-                  // parentClass="mb-4 last:mb-0"
-                  selectLable="Room number"
-                  isMulti={false}
-                  name="roomNumber"
-                  options={[
-                    { label: 'meet', value: 'meet' },
-                    { label: 'meet22', value: 'meet22' },
-                    { label: 'meet1', value: 'meet1' },
-                  ]}
-                  placeholder="Please Select Room"
-                  style={{ margin: '12px', width: '300px' }}
-                  required={true}
-                /> */}
               </div>
               <Button
                 type="submit"
