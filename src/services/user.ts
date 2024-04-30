@@ -1,13 +1,13 @@
-import { axiosDelete, axiosGet, axiosPatch,axiosPost } from '../axios/config';
+import { axiosDelete, axiosGet, axiosPatch, axiosPost } from '../axios/config';
 
 const prefix = `/api/user`;
 
-export const createUser = (data:object)=>{
-    return axiosPost(`${prefix}/`,data);
-}
+export const createUser = (data: object) => {
+  return axiosPost(`${prefix}/`, data);
+};
 
-export const getAllUsers = (data:object) => {
-  return axiosGet(`${prefix}/`,data);
+export const getAllUsers = (data: object) => {
+  return axiosGet(`${prefix}/`, data);
 };
 
 export const getAllUsersOption = () => {
@@ -23,4 +23,8 @@ export const updateUser = (data: object, id: string | number) => {
 };
 export const deleteUser = (id: string | number) => {
   return axiosDelete(`${prefix}/id/${id}`);
+};
+
+export const exportUserExcel = () => {
+  return axiosGet(`${prefix}/exportexcel`);
 };

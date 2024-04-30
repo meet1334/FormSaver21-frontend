@@ -5,7 +5,7 @@ import GlobalLoader from '../../components/GlobalLoader/GlobalLoader';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import CustomTable from '../../components/CustomTable/CustomTable';
-import { deleteUser, getAllUsers } from '../../services/user';
+import { deleteUser, exportUserExcel, getAllUsers } from '../../services/user';
 import { ToastShow } from '../../redux/ducks/toast';
 import Modal from '../../components/Modal/Modal';
 
@@ -254,6 +254,21 @@ const Users = () => {
     }
   };
 
+  const getExcelFile = async () => {
+    try {
+      const fileRes = await exportUserExcel();
+      if (fileRes.config.url) {
+        const a = document.createElement('A');
+        a.setAttribute('href', fileRes.config.url);
+        a.setAttribute('download', 'filename.xlsx');
+        document.body.appendChild(a);
+        a.click();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (userID && rowClicked) {
       navigate(`/users/edit?id=${userID}`);
@@ -364,6 +379,30 @@ const Users = () => {
         setSearchText={setSearchText}
         onrowClick={setUserID}
         closeReasonModal={setOpenReasonIndex}
+        searchAfterElements={
+          <Button
+            type="button"
+            style={{
+              // marginTop: '-10px',
+              marginRight: '560px',
+              // marginLeft: '-50px',
+              border: '2px solid',
+              padding: '10px 5px',
+              fontSize: '15px',
+              backgroundColor: '#5400CF',
+              width: '125px',
+              // height: '20%',
+              color: 'white',
+              borderRadius: '10px',
+            }}
+            parentStyle={{ marginLeft: '90%' }}
+            onClickHandler={() => {
+              getExcelFile();
+            }}
+          >
+            Download List
+          </Button>
+        }
       />
       <Modal
         onClickBtn={'Yes, Delete'}

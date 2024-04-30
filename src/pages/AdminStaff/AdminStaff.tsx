@@ -3,7 +3,7 @@ import Card from '../../components/Card/Card';
 import { Navigate, useNavigate } from 'react-router-dom';
 import CustomTable from '../../components/CustomTable/CustomTable';
 import { useEffect, useState } from 'react';
-import { deleteAdminUser, getAllAdminUsers } from '../../services/adminUser';
+import { deleteAdminUser, exportExcel, getAllAdminUsers } from '../../services/adminUser';
 import GlobalLoader from '../../components/GlobalLoader/GlobalLoader';
 import { useDispatch } from 'react-redux';
 import { ToastShow } from '../../redux/ducks/toast';
@@ -172,7 +172,9 @@ const AdminStaff = () => {
               setDeleteId(props._id);
             }}
           >
-            <i className="material-icons" style={{fontSize:"24px",color:"#5400CF"}}>delete</i>
+            <i className="material-icons" style={{ fontSize: '24px', color: '#5400CF' }}>
+              delete
+            </i>
           </span>
         );
       },
@@ -187,7 +189,9 @@ const AdminStaff = () => {
               navigate(`/admin-staff/edit?id=${props._id}`);
             }}
           >
-            <i className="material-icons" style={{fontSize:"24px",color:"#5400CF"}}>edit</i>
+            <i className="material-icons" style={{ fontSize: '24px', color: '#5400CF' }}>
+              edit
+            </i>
           </span>
         );
       },
@@ -221,6 +225,21 @@ const AdminStaff = () => {
         })
       );
       setIdLoading(false);
+      console.log(error);
+    }
+  };
+
+  const getExcelFile = async () => {
+    try {
+      const fileRes = await exportExcel();
+      if (fileRes.config.url) {
+        const a = document.createElement('A');
+        a.setAttribute('href', fileRes.config.url);
+        a.setAttribute('download', 'filename.xlsx');
+        document.body.appendChild(a);
+        a.click();
+      }
+    } catch (error) {
       console.log(error);
     }
   };
@@ -318,6 +337,31 @@ const AdminStaff = () => {
         setSearchText={setSearchText}
         onrowClick={setAdminStaffID}
         closeReasonModal={setOpenReasonIndex}
+        // search={true}
+        searchAfterElements={
+          <Button
+            type="button"
+            style={{
+              // marginTop: '-10px',
+              marginRight: '560px',
+              // marginLeft: '-50px',
+              border: '2px solid',
+              padding: '10px 5px',
+              fontSize: '15px',
+              backgroundColor: '#5400CF',
+              width: '125px',
+              // height: '20%',
+              color: 'white',
+              borderRadius: '10px',
+            }}
+            parentStyle={{ marginLeft: '90%' }}
+            onClickHandler={() => {
+              getExcelFile();
+            }}
+          >
+            Download List
+          </Button>
+        }
       />
       <Modal
         onClickBtn={'Yes, Delete'}

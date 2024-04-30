@@ -20,3 +20,7 @@ export const updateAdminUser = (data: object, id: string | number) => {
 export const deleteAdminUser = (id: string | number) => {
   return axiosDelete(`${prefix}/id/${id}`);
 };
+
+export const exportExcel = () => {
+  return axiosGet(`${prefix}/exportexcel`);
+};

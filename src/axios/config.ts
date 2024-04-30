@@ -76,7 +76,9 @@ const setupAxios = (store: Store) => {
 
 export default setupAxios;
 
+// const fronturl = process.env.REACT_APP_STAGING_URL;
 const fronturl = process.env.REACT_APP_LOCAL_URL;
+
 
 export function axiosGet<T>(url: string, data: T | null = null) {
   return axios.get(`${fronturl}${url}`, {
